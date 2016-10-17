@@ -5,6 +5,12 @@ public class PlayerController : MonoBehaviour {
     // PRIVATE INSTANCE VARIABLES
     private Transform _transform;
     private Rigidbody2D _rigidbody;
+    private Animator _animator;
+    private GameObject _camera;
+    private GameObject _spawnPoint;
+    private GameObject _gameControllerObject;
+    //private GameController _gameController;
+
     private float _move;
     private float _jump;
     private bool _isFacingRight;
@@ -12,13 +18,15 @@ public class PlayerController : MonoBehaviour {
 
     // PUBLIC INSTANCE VARIABLES (FOR TESTING)
     public float Velocity = 10f;
-    public float JumpForce = 200f;
-    public Camera camera;
-    public Transform SpawnPoint;
+    public float JumpForce = 100f;
+
 
     [Header("Sound Clips")]
     public AudioSource JumpSound;
     public AudioSource DeathSound;
+    public AudioSource CoinSound;
+    public AudioSource HurtSound;
+    public AudioSource EnemyDeadSound;
 
     // Use this for initialization
     void Start()
@@ -31,25 +39,28 @@ public class PlayerController : MonoBehaviour {
     {
 
         if (this._isGrounded)
-        {    Debug.Log( this._move);
+        {
             // check if input is present for movement
             this._move = Input.GetAxis("Horizontal");
-            Debug.Log(this._move);
-
             if (this._move > 0f)
             {
+                // set the animation state to "Walk"
+                this._animator.SetInteger("HeroState", 1);
                 this._move = 1;
                 this._isFacingRight = true;
                 this._flip();
             }
             else if (this._move < 0f)
             {
+                this._animator.SetInteger("HeroState", 1);
                 this._move = -1;
                 this._isFacingRight = false;
                 this._flip();
             }
             else
             {
+                // set the animation state to "Idle"
+                this._animator.SetInteger("HeroState", 0);
                 this._move = 0f;
             }
 
@@ -65,8 +76,6 @@ public class PlayerController : MonoBehaviour {
                 this._jump * this.JumpForce),
                 ForceMode2D.Force);
 
-            Debug.Log(this._move * this.Velocity);
-
         }
         else
         {
@@ -74,11 +83,9 @@ public class PlayerController : MonoBehaviour {
             this._jump = 0f;
         }
 
-
-
-        this.camera.transform.position = new Vector3(
+        this._camera.transform.position = new Vector3(
             this._transform.position.x,
-            this._transform.position.y+1f,
+            this._transform.position.y,
             -10f);
 
     }
@@ -91,6 +98,13 @@ public class PlayerController : MonoBehaviour {
     {
         this._transform = GetComponent<Transform>();
         this._rigidbody = GetComponent<Rigidbody2D>();
+        this._animator = GetComponent<Animator>();
+        this._camera = GameObject.FindWithTag("MainCamera");
+        this._spawnPoint = GameObject.FindWithTag("SpawnPoint");
+
+        //this._gameControllerObject = GameObject.Find("Game Controller");
+        //this._gameController = this._gameControllerObject.GetComponent<GameController>() as GameController;
+
         this._move = 0f;
         this._isFacingRight = true;
         this._isGrounded = false;
@@ -116,8 +130,24 @@ public class PlayerController : MonoBehaviour {
         if (other.gameObject.CompareTag("DeathPlane"))
         {
             // move the player's position to the spawn point's position
-            this._transform.position = this.SpawnPoint.position;
+            this._transform.position = this._spawnPoint.transform.position;
             this.DeathSound.Play();
+            //this._gameController.LivesValue -= 1;
+        }
+
+        if (other.gameObject.CompareTag("Coin"))
+        {
+            Destroy(other.gameObject);
+            this.CoinSound.Play();
+            //this._gameController.ScoreValue += 100;
+        }
+
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            // move the player's position to the spawn point's position
+            this._transform.position = this._spawnPoint.transform.position;
+            this.HurtSound.Play();
+            //this._gameController.LivesValue -= 1;
         }
     }
 
@@ -131,6 +161,18 @@ public class PlayerController : MonoBehaviour {
 
     private void OnCollisionExit2D(Collision2D other)
     {
+        this._animator.SetInteger("HeroState", 2);
+
         this._isGrounded = false;
+    }
+
+    // debug if player lands on object's head
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            this.EnemyDeadSound.Play();
+            Destroy(other.gameObject);
+        }
     }
 }
