@@ -63,6 +63,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\_Scripts\CheckPointContoller.cs" />
+    <Compile Include="Assets\_Scripts\EnemyController.cs" />
     <Compile Include="Assets\_Scripts\MenuController.cs" />
     <Compile Include="Assets\_Scripts\PlayerController.cs" />
   </ItemGroup>
