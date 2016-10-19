@@ -11,8 +11,8 @@ public class EnemyController : MonoBehaviour {
     private bool _isPlayerDetected;
 
     // PUBLIC INSTANCE VARIABLES (FOR TESTING)
-    public float Speed = 3f;
-    public float MaximumSpeed = 3f;
+    public float Speed = 1f;
+    public float MaximumSpeed = 2f;
     public Transform SightStart;
     public Transform SightEnd;
     public Transform LineOfSight;
