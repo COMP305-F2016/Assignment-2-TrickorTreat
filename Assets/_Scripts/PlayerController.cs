@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour {
     private GameObject _camera;
     private GameObject _spawnPoint;
     private GameObject _gameControllerObject;
-    //private GameController _gameController;
+    private GameController _gameController;
 
     private float _move;
     private float _jump;
@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour {
 
     // PUBLIC INSTANCE VARIABLES (FOR TESTING)
     public float Velocity = 10f;
-    public float JumpForce = 100f;
+    public float JumpForce = 300f;
 
 
     [Header("Sound Clips")]
@@ -102,8 +102,8 @@ public class PlayerController : MonoBehaviour {
         this._camera = GameObject.FindWithTag("MainCamera");
         this._spawnPoint = GameObject.FindWithTag("SpawnPoint");
 
-        //this._gameControllerObject = GameObject.Find("Game Controller");
-        //this._gameController = this._gameControllerObject.GetComponent<GameController>() as GameController;
+        this._gameControllerObject = GameObject.Find("Game Controller");
+        this._gameController = this._gameControllerObject.GetComponent<GameController>() as GameController;
 
         this._move = 0f;
         this._isFacingRight = true;
@@ -132,14 +132,14 @@ public class PlayerController : MonoBehaviour {
             // move the player's position to the spawn point's position
             this._transform.position = this._spawnPoint.transform.position;
             this.DeathSound.Play();
-            //this._gameController.LivesValue -= 1;
+            this._gameController.LivesValue -= 1;
         }
 
         if (other.gameObject.CompareTag("Coin"))
         {
             Destroy(other.gameObject);
             this.CoinSound.Play();
-            //this._gameController.ScoreValue += 100;
+            this._gameController.ScoreValue += 100;
         }
 
         if (other.gameObject.CompareTag("Enemy"))
@@ -147,7 +147,7 @@ public class PlayerController : MonoBehaviour {
             // move the player's position to the spawn point's position
             this._transform.position = this._spawnPoint.transform.position;
             this.HurtSound.Play();
-            //this._gameController.LivesValue -= 1;
+            this._gameController.LivesValue -= 1;
         }
     }
 
