@@ -117,7 +117,8 @@ public class PlayerController : MonoBehaviour {
         this._move = 0f;
         this._isFacingRight = true;
         this._isGrounded = false;
-    }
+
+      }
 
     /**
 	 * This method flips the character's bitmap across the x-axis

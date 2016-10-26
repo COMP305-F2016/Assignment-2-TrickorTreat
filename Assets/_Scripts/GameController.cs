@@ -80,6 +80,8 @@ public class GameController : MonoBehaviour {
         this.GameOverLabel.gameObject.SetActive(false);
         this.FinalScoreLabel.gameObject.SetActive(false);
         this.RestartButton.gameObject.SetActive(false);
+        //this.player.SetActive(false);
+        this.enemy.SetActive(true);
 
         this._endGameSound = this.GetComponent<AudioSource>();
 
@@ -99,7 +101,7 @@ public class GameController : MonoBehaviour {
         this.ScoreLabel.gameObject.SetActive(false);
         this.LivesLabel.gameObject.SetActive(false);
         this.player.SetActive(false);
-        this.enemy.SetActive(false);
+        //this.enemy.SetActive(false);
         this._endGameSound.Play();
     }
 
@@ -107,6 +109,7 @@ public class GameController : MonoBehaviour {
     public void RestartButton_Click()
     {
         SceneManager.LoadScene("Play");
+        this.enemy.SetActive(true);
     }
 }
 
