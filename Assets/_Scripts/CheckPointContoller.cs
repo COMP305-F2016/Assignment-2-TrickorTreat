@@ -1,4 +1,13 @@
-﻿using UnityEngine;
+﻿///-----------------------------------------------------------------
+///   Namespace:      COMP305-F2016-Assignment2-TrickOrTreat
+///   Class:          EnemyController
+///   Description:    This controls the Enemy behavior 
+///   Author:         Angela Liu                    Date: October 16,2016
+///   Notes:          Enemy controller
+///   Revision History: V1.0
+///   Name: Angela          Date: Oct 16,2016        Description:
+///-----------------------------------------------------------------
+using UnityEngine;
 using System.Collections;
 
 public class CheckPointContoller : MonoBehaviour {
